@@ -1,0 +1,63 @@
+ELEMENT DATA LIST FORMAT:
+[id, text, desc, type, (qn_settings, ...image settings...)]
+
+id: element id
+text: element text/title
+desc: element description
+type: element type id
+qn_settings: list of settings (more info below)
+
+=====================
+TYPE
+
+0: short answer
+1: paragraph
+2: multiple choice
+3: drop-down
+4: checkboxes
+5: linear scale
+6: additional title and description (separate from section header)
+7: multiple-choice grid/ tick box grid
+8: section header containing title and description
+9: date
+10: time
+11: image
+12: video
+13: file upload
+====================
+QN_SETTINGS
+
+Short ans/paragraph:
+[[input_id, 0, required (, ...response validation settings...)]]
+
+Multiple choice/ checkboxes/ drop-down:
+[[input_id, list_of_options, 0 if mcq/ 1 if checkboxes, ?, ?, ?, ?, ?, ?]]
+**list_of_options: [[option1_text, ?, next_section, ?, ?], ... ]
+***NOTE: 'other' option_text appears as ''
+****next_section:
+-1: Go to start of form (ie. first section)
+-2: Continue to next section
+-3: Submit form
+<specific_section_id>: go to said section id
+
+Linear Scale:
+[[input_id, [[option1_text], [option2_text], ... ], ?, [leftmost_label, rightmost_label]]]
+
+Multiple-choice grid/ Tick box grid:
+[[input_id, [[column1_name], [column2_name], ... ], ?, [row1_name], ?x7, [0 if mcq/1 if tick]] (, repeat prev list for each row)]
+
+Date:
+[[input_id, ?, ?, ?, ?, ?, ?, [0,1]]]
+
+Time:
+[[input_id, ?, ?, ?, ?, ?, [0]]]
+====================
+Section Header (title+description):
+[section_id, title, description, 8, ? (, jump_to_section)]
+**NOTE : jump_to_section specifies the section to go to when the PREVIOUS section is completed
+**Means: Previous section done -> current section -> checks jump_to_section -> go to corresponding section
+variable not present: stay at current section
+-1: Go to start of form (ie. first section)
+-3: Submit form
+<specific_section_id>: go to said section id
+====================
